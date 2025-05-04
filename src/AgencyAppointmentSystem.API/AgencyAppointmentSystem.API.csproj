@@ -4,7 +4,13 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <DefaultItemExcludes>$(DefaultItemExcludes);swagger\**</DefaultItemExcludes>
   </PropertyGroup>
+
+	<Target Name="EnsureSwaggerFolders" AfterTargets="Publish">
+		<MakeDir Directories="$(PublishDir)swagger/v1" />
+		<MakeDir Directories="$(PublishDir)wwwroot/swagger-ui" />
+	</Target>
 
   <ItemGroup>
     <Content Include="properties\ServiceDependencies.json" />
@@ -28,8 +34,17 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="wwwroot\**" CopyToPublishDirectory="Always" />
-		<Content Include="swagger\**" CopyToPublishDirectory="Always" />
+		<Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="swagger\**" CopyToPublishDirectory="PreserveNewest" />
 	</ItemGroup>
+
+	<Target Name="EnsureSwaggerFolders" BeforeTargets="PrepareForPublish">
+		<MakeDir Directories="$(PublishDir)swagger/v1" />
+		<MakeDir Directories="$(PublishDir)wwwroot/swagger-ui" />
+	</Target>
+	<Target Name="GenerateSwaggerOnPublish" AfterTargets="PrepareForPublish" DependsOnTargets="EnsureSwaggerFolders">
+		<Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)" IgnoreExitCode="true" />
+		<Exec Command="dotnet swagger tofile --output $(PublishDir)swagger/v1/swagger.json $(TargetPath) v1" IgnoreExitCode="false" />
+	</Target>
 
 </Project>

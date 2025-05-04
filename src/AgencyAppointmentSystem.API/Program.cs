@@ -60,16 +60,26 @@ app.MapControllers();
 
 app.MapGet("/swagger/v1/swagger.json", () =>
     Results.File("swagger/v1/swagger.json", "application/json"));
-app.MapGet("/generate-swagger-assets", () => {
+app.MapGet("/create-swagger-files", () => {
+    // Create directories if missing
     Directory.CreateDirectory(Path.Combine("wwwroot", "swagger-ui"));
     Directory.CreateDirectory(Path.Combine("swagger", "v1"));
 
-    System.IO.File.WriteAllText("swagger/v1/swagger.json",
-        JsonSerializer.Serialize(new OpenApiDocument
+    // Generate minimal swagger.json
+    File.WriteAllText(
+        Path.Combine("swagger", "v1", "swagger.json"),
+        JsonSerializer.Serialize(new
         {
-            Info = new OpenApiInfo { Title = "Appointment API", Version = "v1" }
-        }));
+            openapi = "3.0.1",
+            info = new
+            {
+                title = "Appointment API",
+                version = "v1"
+            },
+            paths = new Dictionary<string, object>()
+        })
+    );
 
-    return Results.Ok("Swagger assets generated");
+    return Results.Ok("Swagger files created");
 });
 app.Run();

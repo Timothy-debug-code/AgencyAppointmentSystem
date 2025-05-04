@@ -27,4 +27,9 @@
     <ProjectReference Include="..\AgencyAppointmentSystem.Infrastructure\AgencyAppointmentSystem.Infrastructure.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="wwwroot\**" CopyToPublishDirectory="Always" />
+		<Content Include="swagger\**" CopyToPublishDirectory="Always" />
+	</ItemGroup>
+
 </Project>

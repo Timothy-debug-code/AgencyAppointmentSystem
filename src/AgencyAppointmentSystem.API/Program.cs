@@ -3,6 +3,7 @@ using AgencyAppointmentSystem.Infrastructure;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +45,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseDeveloperExceptionPage();
+    //app.UseDeveloperExceptionPage();
     app.UseStaticFiles();
     app.UseSwagger();
     app.UseSwaggerUI(c => {
@@ -59,4 +60,16 @@ app.MapControllers();
 
 app.MapGet("/swagger/v1/swagger.json", () =>
     Results.File("swagger/v1/swagger.json", "application/json"));
+app.MapGet("/generate-swagger-assets", () => {
+    Directory.CreateDirectory(Path.Combine("wwwroot", "swagger-ui"));
+    Directory.CreateDirectory(Path.Combine("swagger", "v1"));
+
+    System.IO.File.WriteAllText("swagger/v1/swagger.json",
+        JsonSerializer.Serialize(new OpenApiDocument
+        {
+            Info = new OpenApiInfo { Title = "Appointment API", Version = "v1" }
+        }));
+
+    return Results.Ok("Swagger assets generated");
+});
 app.Run();

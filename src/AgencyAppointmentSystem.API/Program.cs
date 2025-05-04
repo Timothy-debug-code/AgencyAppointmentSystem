@@ -26,8 +26,8 @@ builder.Services.AddSwaggerGen(c =>
         Description = "API for managing customer appointments and tokens",
         Contact = new OpenApiContact
         {
-            Name = "Your Name",
-            Email = "your.email@example.com"
+            Name = "Timmy",
+            Email = "aurelius.timothy.tomason@gmail.com"
         }
     });
 });

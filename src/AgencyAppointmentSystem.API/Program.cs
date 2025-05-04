@@ -45,12 +45,18 @@ var app = builder.Build();
 //if (app.Environment.IsDevelopment())
 //{
     app.UseDeveloperExceptionPage();
+    app.UseStaticFiles();
     app.UseSwagger();
-    app.UseSwaggerUI()/*(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Appointment Booking API v1"))*/;
+    app.UseSwaggerUI(c => {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Appointment Booking API v1");
+        c.RoutePrefix = "swagger";  // Set as default docs page
+    })/*(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Appointment Booking API v1"))*/;
 //}
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+app.MapGet("/swagger/v1/swagger.json", () =>
+    Results.File("swagger/v1/swagger.json", "application/json"));
 app.Run();

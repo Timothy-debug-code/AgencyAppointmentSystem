@@ -34,8 +34,11 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" />
 		<Content Include="swagger\**" CopyToPublishDirectory="PreserveNewest" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 
 	<Target Name="EnsureSwaggerFolders" BeforeTargets="PrepareForPublish">

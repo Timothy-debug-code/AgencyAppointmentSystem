@@ -2,6 +2,8 @@
 
 A .NET Web API solution for agencies to book appointments for customers and issue tokens. The system allows agencies to view and manage a queue of customers with appointments for a specific day.
 
+![image](https://github.com/user-attachments/assets/8f45f676-849b-4c15-bc2f-e697978cbe5c)
+
 
 ## Features
 
